@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>腹黑值测试 - 测测你的暗黑指数</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- ====== 屏幕1：首页 ====== -->
+    <div id="screen-home" class="screen active">
+      <div class="home-content">
+        <div class="home-icon">🖤</div>
+        <h1 class="home-title">腹黑值测试</h1>
+        <p class="home-subtitle">你在微笑背后，藏了多少小心思？</p>
+        <p class="home-desc">10个情景 · 揭露你的真实暗黑指数</p>
+        <button id="btn-start" class="btn-primary">
+          <span>开始测试</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <button id="btn-gallery-from-home" class="btn-text">📖 查看全部图鉴</button>
+      </div>
+      <div class="home-decoration">
+        <span class="deco-circle c1"></span>
+        <span class="deco-circle c2"></span>
+        <span class="deco-circle c3"></span>
+      </div>
+    </div>
+
+    <!-- ====== 屏幕2：游戏页 ====== -->
+    <div id="screen-game" class="screen">
+      <div class="game-header">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-text" id="progress-text">1 / 10</span>
+      </div>
+      <div class="game-body">
+        <div class="scenario-card" id="scenario-card">
+          <div class="scenario-number" id="scenario-number">Q1</div>
+          <div class="scenario-bubble">
+            <p class="scenario-text" id="scenario-text"></p>
+          </div>
+        </div>
+        <div class="choices-container" id="choices-container"></div>
+      </div>
+    </div>
+
+    <!-- ====== 屏幕3：结果页 ====== -->
+    <div id="screen-result" class="screen">
+      <div class="result-content">
+        <h2 class="result-heading">你的腹黑值</h2>
+        <div class="score-ring-container">
+          <svg class="score-ring" viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="85"/>
+            <circle class="ring-fill" id="ring-fill" cx="100" cy="100" r="85"/>
+          </svg>
+          <div class="score-center">
+            <span class="score-number" id="score-number">0</span>
+            <span class="score-unit">分</span>
+          </div>
+        </div>
+        <div class="level-card" id="level-card">
+          <div class="level-emoji" id="level-emoji">🕊️</div>
+          <h3 class="level-name" id="level-name">纯白小天使</h3>
+          <p class="level-desc" id="level-desc"></p>
+        </div>
+        <div class="result-actions">
+          <button id="btn-share" class="btn-secondary">📸 生成分享卡片</button>
+          <button id="btn-gallery-from-result" class="btn-secondary">📖 查看图鉴</button>
+          <button id="btn-retry" class="btn-primary">🔄 重新测试</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 屏幕4：图鉴页 ====== -->
+    <div id="screen-gallery" class="screen">
+      <div class="gallery-content">
+        <h2 class="gallery-heading">📖 腹黑等级图鉴</h2>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <button id="btn-back-home" class="btn-text">← 返回首页</button>
+      </div>
+    </div>
+
+    <!-- ====== 分享弹窗 ====== -->
+    <div id="modal-share" class="modal">
+      <div class="modal-content">
+        <h3>📸 你的腹黑身份卡</h3>
+        <canvas id="share-canvas" width="600" height="800"></canvas>
+        <img id="share-preview" alt="分享预览" style="display:none;">
+        <div class="modal-actions">
+          <button id="btn-download" class="btn-primary">💾 保存图片</button>
+          <button id="btn-close-modal" class="btn-text">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/questions.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/share.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
