@@ -160,17 +160,18 @@ const App = {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const text = '小红书 自我说明书l71';
-    const cellW = 200;
-    const cellH = 150;
+    const cellW = 175;
+    const cellH = 135;
     canvas.width = cellW * 2;
     canvas.height = cellH * 2;
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-    ctx.font = '28px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.font = '24px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
     wm.style.backgroundImage = 'url(' + canvas.toDataURL() + ')';
     wm.style.backgroundSize = cellW + 'px ' + cellH + 'px';
+    wm.style.backgroundPosition = '0 90px';
   },
 
   // ---- 初始化 ----
