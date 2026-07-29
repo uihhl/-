@@ -128,6 +128,12 @@ const ShareCard = {
     ctx.font = 'italic 15px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.fillText('「' + level.tagline + '」', W / 2, tagY);
 
+    // --- 底部 @账号 ---
+    ctx.fillStyle = '#b8a8cc';
+    ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('@自我说明书l71', W / 2, 770);
+
     // 返回 Blob
     return new Promise(resolve => {
       canvas.toBlob(blob => resolve(blob), 'image/png');
