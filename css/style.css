@@ -400,6 +400,11 @@ body {
 /* ==========================================
    屏幕3：结果页
    ========================================== */
+#screen-result {
+  justify-content: flex-start;
+  padding-top: 30px;
+}
+
 .result-content {
   text-align: center;
   width: 100%;
