@@ -1,11 +1,10 @@
 // ==========================================
 // 腹黑值测试 - 分享卡片生成 (Canvas API)
-// 含水印 + 小红书二维码
+// 含微信二维码 + @账号
 // ==========================================
 
 const ShareCard = {
-  _qrImage: null,
-  _wmImage: null,
+  _wechatQr: null,
   _imagesLoaded: false,
 
   /**
@@ -20,8 +19,7 @@ const ShareCard = {
       img.onerror = () => resolve(null);
       img.src = src;
     });
-    this._qrImage = await loadImg('assets/qrcode.png');
-    this._wmImage = await loadImg('assets/watermark.png');
+    this._wechatQr = await loadImg('assets/wechat-qr.png');
     this._imagesLoaded = true;
   },
 
@@ -46,20 +44,6 @@ const ShareCard = {
     bgGrad.addColorStop(1, '#1a1025');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
-
-    // --- 水印图片：平铺半透明背景 ---
-    if (this._wmImage) {
-      ctx.save();
-      ctx.globalAlpha = 0.04;
-      const wmW = 200;
-      const wmH = (this._wmImage.height / this._wmImage.width) * wmW;
-      for (let x = -50; x < W + 50; x += wmW + 40) {
-        for (let y = -50; y < H + 50; y += wmH + 40) {
-          ctx.drawImage(this._wmImage, x, y, wmW, wmH);
-        }
-      }
-      ctx.restore();
-    }
 
     // --- 装饰光点 ---
     ctx.fillStyle = 'rgba(179, 136, 255, 0.06)';
@@ -153,40 +137,33 @@ const ShareCard = {
     ctx.lineTo(W - 60, footerY);
     ctx.stroke();
 
-    // --- 底部区域：水印 + 二维码 ---
-    const footerTop = footerY + 16;
-    const qrSize = 90;
+    // --- 底部区域：@账号 + 微信二维码居中 ---
+    const footerTop = footerY + 20;
 
-    // 小红书水印（左下）
-    if (this._wmImage) {
-      const wmH = 60;
-      const wmW = (this._wmImage.width / this._wmImage.height) * wmH;
-      ctx.globalAlpha = 0.85;
-      ctx.drawImage(this._wmImage, 36, footerTop + 4, wmW, wmH);
-      ctx.globalAlpha = 1;
-    }
+    // @自我说明书l71
+    ctx.fillStyle = '#b8a8cc';
+    ctx.font = '15px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('@自我说明书l71', W / 2, footerTop);
 
-    // 二维码（右下）
-    const qrX = W - qrSize - 40;
-    const qrY = footerTop;
+    // 微信二维码（居中，白色）
+    const qrSize = 100;
+    const qrX = W / 2 - qrSize / 2;
+    const qrY = footerTop + 10;
 
-    if (this._qrImage) {
-      ctx.drawImage(this._qrImage, qrX, qrY, qrSize, qrSize);
+    if (this._wechatQr) {
+      ctx.drawImage(this._wechatQr, qrX, qrY, qrSize, qrSize);
     } else {
-      ctx.strokeStyle = 'rgba(179, 136, 255, 0.3)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
       ctx.lineWidth = 2;
       ctx.strokeRect(qrX, qrY, qrSize, qrSize);
-      ctx.fillStyle = '#b8a8cc';
-      ctx.font = '11px "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('小红书', qrX + qrSize / 2, qrY + qrSize / 2);
     }
 
-    // 二维码引导文字
+    // 扫码了解更多
     ctx.fillStyle = '#b8a8cc';
-    ctx.font = '12px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText('📕 扫码关注小红书', qrX - 14, qrY + qrSize + 18);
+    ctx.font = '13px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('扫码了解更多', W / 2, qrY + qrSize + 20);
 
     // --- 斜角水印文字 ---
     ctx.save();
