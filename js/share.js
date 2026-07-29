@@ -128,62 +128,6 @@ const ShareCard = {
     ctx.font = 'italic 15px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.fillText('「' + level.tagline + '」', W / 2, tagY);
 
-    // --- 底部分割线 ---
-    const footerY = tagY + 14;
-    ctx.strokeStyle = 'rgba(179, 136, 255, 0.2)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(60, footerY);
-    ctx.lineTo(W - 60, footerY);
-    ctx.stroke();
-
-    // --- 底部区域：@账号 + 微信二维码居中 ---
-    const footerTop = footerY + 8;
-
-    // @自我说明书l71
-    ctx.fillStyle = '#b8a8cc';
-    ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('@自我说明书l71', W / 2, footerTop);
-
-    // 微信二维码（居中）
-    const qrW = 55;
-    const qrH = this._wechatQr ? (this._wechatQr.height / this._wechatQr.width) * qrW : 80;
-    const qrX = W / 2 - qrW / 2;
-    const qrY = footerTop + 4;
-    const qrBottom = qrY + qrH;
-
-    if (this._wechatQr) {
-      // 白色圆角背景
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      const r = 8, bw = qrW + 12, bh = qrH + 12;
-      const bx = W / 2 - bw / 2, by = qrY - 6;
-      ctx.moveTo(bx + r, by);
-      ctx.lineTo(bx + bw - r, by);
-      ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + r);
-      ctx.lineTo(bx + bw, by + bh - r);
-      ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - r, by + bh);
-      ctx.lineTo(bx + r, by + bh);
-      ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - r);
-      ctx.lineTo(bx, by + r);
-      ctx.quadraticCurveTo(bx, by, bx + r, by);
-      ctx.closePath();
-      ctx.fill();
-      // 二维码（保持比例）
-      ctx.drawImage(this._wechatQr, qrX, qrY, qrW, qrH);
-    } else {
-      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(qrX, qrY, qrW, qrH);
-    }
-
-    // 扫码了解更多
-    ctx.fillStyle = '#b8a8cc';
-    ctx.font = '13px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('扫码了解更多', W / 2, qrBottom + 16);
-
     // 返回 Blob
     return new Promise(resolve => {
       canvas.toBlob(blob => resolve(blob), 'image/png');
