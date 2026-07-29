@@ -672,6 +672,41 @@ body {
    暗色模式 (可选)
    ========================================== */
 /* ==========================================
+   二维码引流区（结果页底部）
+   ========================================== */
+.share-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0 32px;
+  margin-top: 8px;
+}
+
+.share-qr__img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  border: 2px solid rgba(0,0,0,0.10);
+  padding: 6px;
+  background: #fff;
+  margin-bottom: 4px;
+}
+
+.share-qr__text {
+  color: #8888A8;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.share-qr__text2 {
+  color: #7777A0;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ==========================================
    页面水印（全屏平铺文字）
    ========================================== */
 .watermark {
