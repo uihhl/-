@@ -1,8 +1,30 @@
 // ==========================================
 // 腹黑值测试 - 分享卡片生成 (Canvas API)
+// 含水印 + 小红书二维码
 // ==========================================
 
 const ShareCard = {
+  _qrImage: null,
+  _wmImage: null,
+  _imagesLoaded: false,
+
+  /**
+   * 预加载图片资源
+   */
+  async loadImages() {
+    if (this._imagesLoaded) return;
+    const loadImg = (src) => new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+    this._qrImage = await loadImg('assets/qrcode.png');
+    this._wmImage = await loadImg('assets/watermark.png');
+    this._imagesLoaded = true;
+  },
+
   /**
    * 生成分享卡片
    * @param {object} level - 等级对象
@@ -10,6 +32,8 @@ const ShareCard = {
    * @returns {Promise<Blob>} 图片 Blob
    */
   async generate(level, score) {
+    await this.loadImages();
+
     const canvas = document.getElementById('share-canvas');
     const ctx = canvas.getContext('2d');
     const W = canvas.width;   // 600
@@ -22,6 +46,20 @@ const ShareCard = {
     bgGrad.addColorStop(1, '#1a1025');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
+
+    // --- 水印图片：平铺半透明背景 ---
+    if (this._wmImage) {
+      ctx.save();
+      ctx.globalAlpha = 0.04;
+      const wmW = 200;
+      const wmH = (this._wmImage.height / this._wmImage.width) * wmW;
+      for (let x = -50; x < W + 50; x += wmW + 40) {
+        for (let y = -50; y < H + 50; y += wmH + 40) {
+          ctx.drawImage(this._wmImage, x, y, wmW, wmH);
+        }
+      }
+      ctx.restore();
+    }
 
     // --- 装饰光点 ---
     ctx.fillStyle = 'rgba(179, 136, 255, 0.06)';
@@ -54,14 +92,12 @@ const ShareCard = {
     const cx = W / 2, cy = 310, radius = 100;
     const pct = score / 50;
 
-    // 背景环
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
     ctx.lineWidth = 12;
     ctx.stroke();
 
-    // 进度弧
     ctx.beginPath();
     ctx.arc(cx, cy, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
     ctx.strokeStyle = level.color;
@@ -69,7 +105,6 @@ const ShareCard = {
     ctx.lineCap = 'round';
     ctx.stroke();
 
-    // 分数数字
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 52px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
@@ -109,10 +144,55 @@ const ShareCard = {
     ctx.font = 'italic 15px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.fillText('「' + level.tagline + '」', W / 2, tagY);
 
-    // --- 底部 ---
-    ctx.fillStyle = 'rgba(179, 136, 255, 0.15)';
+    // --- 底部分割线 ---
+    const footerY = tagY + 30;
+    ctx.strokeStyle = 'rgba(179, 136, 255, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(60, footerY);
+    ctx.lineTo(W - 60, footerY);
+    ctx.stroke();
+
+    // --- 二维码 + 引导文字 ---
+    const qrSize = 90;
+    const qrX = W - qrSize - 40;
+    const qrY = footerY + 20;
+
+    if (this._qrImage) {
+      ctx.drawImage(this._qrImage, qrX, qrY, qrSize, qrSize);
+    } else {
+      // 降级：绘制占位框
+      ctx.strokeStyle = 'rgba(179, 136, 255, 0.3)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(qrX, qrY, qrSize, qrSize);
+      ctx.fillStyle = '#b8a8cc';
+      ctx.font = '11px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('小红书', qrX + qrSize / 2, qrY + qrSize / 2);
+    }
+
+    // 引导文字
+    ctx.fillStyle = '#ede7f6';
+    ctx.font = 'bold 14px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('📕 扫码关注小红书', qrX - 14, qrY + 35);
+
+    ctx.fillStyle = '#b8a8cc';
     ctx.font = '12px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.fillText('扫码测测你的腹黑值 →', W / 2, H - 30);
+    ctx.fillText('更多有趣测试等你来', qrX - 14, qrY + 55);
+
+    // --- 斜角水印文字 ---
+    ctx.save();
+    ctx.globalAlpha = 0.04;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(-25 * Math.PI / 180);
+    ctx.fillText('腹黑值测试', 0, 0);
+    ctx.fillText('腹黑值测试', -60, 120);
+    ctx.fillText('腹黑值测试', 60, -120);
+    ctx.restore();
 
     // 返回 Blob
     return new Promise(resolve => {
