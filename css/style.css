@@ -510,9 +510,16 @@ body {
 /* ==========================================
    屏幕4：图鉴页
    ========================================== */
+/* 图鉴页覆盖：顶部对齐 + 留出呼吸空间 */
+#screen-gallery {
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
 .gallery-content {
   width: 100%;
   text-align: center;
+  padding-bottom: 40px;
 }
 
 .gallery-heading {
