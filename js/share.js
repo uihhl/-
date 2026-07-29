@@ -153,15 +153,26 @@ const ShareCard = {
     ctx.lineTo(W - 60, footerY);
     ctx.stroke();
 
-    // --- 二维码 + 引导文字 ---
+    // --- 底部区域：水印 + 二维码 ---
+    const footerTop = footerY + 16;
     const qrSize = 90;
+
+    // 小红书水印（左下）
+    if (this._wmImage) {
+      const wmH = 60;
+      const wmW = (this._wmImage.width / this._wmImage.height) * wmH;
+      ctx.globalAlpha = 0.85;
+      ctx.drawImage(this._wmImage, 36, footerTop + 4, wmW, wmH);
+      ctx.globalAlpha = 1;
+    }
+
+    // 二维码（右下）
     const qrX = W - qrSize - 40;
-    const qrY = footerY + 20;
+    const qrY = footerTop;
 
     if (this._qrImage) {
       ctx.drawImage(this._qrImage, qrX, qrY, qrSize, qrSize);
     } else {
-      // 降级：绘制占位框
       ctx.strokeStyle = 'rgba(179, 136, 255, 0.3)';
       ctx.lineWidth = 2;
       ctx.strokeRect(qrX, qrY, qrSize, qrSize);
@@ -171,15 +182,11 @@ const ShareCard = {
       ctx.fillText('小红书', qrX + qrSize / 2, qrY + qrSize / 2);
     }
 
-    // 引导文字
-    ctx.fillStyle = '#ede7f6';
-    ctx.font = 'bold 14px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText('📕 扫码关注小红书', qrX - 14, qrY + 35);
-
+    // 二维码引导文字
     ctx.fillStyle = '#b8a8cc';
     ctx.font = '12px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.fillText('更多有趣测试等你来', qrX - 14, qrY + 55);
+    ctx.textAlign = 'right';
+    ctx.fillText('📕 扫码关注小红书', qrX - 14, qrY + qrSize + 18);
 
     // --- 斜角水印文字 ---
     ctx.save();
