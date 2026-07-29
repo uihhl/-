@@ -119,17 +119,17 @@ const ShareCard = {
     ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
     const descLines = this.wrapText(ctx, level.description, W - 120);
     descLines.forEach((line, i) => {
-      ctx.fillText(line, W / 2, 625 + i * 24);
+      ctx.fillText(line, W / 2, 610 + i * 20);
     });
 
     // --- Tagline ---
-    const tagY = 625 + descLines.length * 24 + 20;
+    const tagY = 610 + descLines.length * 20 + 12;
     ctx.fillStyle = level.color;
     ctx.font = 'italic 15px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.fillText('「' + level.tagline + '」', W / 2, tagY);
 
     // --- 底部分割线 ---
-    const footerY = tagY + 30;
+    const footerY = tagY + 14;
     ctx.strokeStyle = 'rgba(179, 136, 255, 0.2)';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -138,18 +138,18 @@ const ShareCard = {
     ctx.stroke();
 
     // --- 底部区域：@账号 + 微信二维码居中 ---
-    const footerTop = footerY + 20;
+    const footerTop = footerY + 8;
 
     // @自我说明书l71
     ctx.fillStyle = '#b8a8cc';
-    ctx.font = '15px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('@自我说明书l71', W / 2, footerTop);
 
     // 微信二维码（居中，白色）
-    const qrSize = 100;
+    const qrSize = 65;
     const qrX = W / 2 - qrSize / 2;
-    const qrY = footerTop + 10;
+    const qrY = footerTop + 4;
 
     if (this._wechatQr) {
       ctx.drawImage(this._wechatQr, qrX, qrY, qrSize, qrSize);
@@ -163,20 +163,7 @@ const ShareCard = {
     ctx.fillStyle = '#b8a8cc';
     ctx.font = '13px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('扫码了解更多', W / 2, qrY + qrSize + 20);
-
-    // --- 斜角水印文字 ---
-    ctx.save();
-    ctx.globalAlpha = 0.04;
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 48px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.translate(W / 2, H / 2);
-    ctx.rotate(-25 * Math.PI / 180);
-    ctx.fillText('腹黑值测试', 0, 0);
-    ctx.fillText('腹黑值测试', -60, 120);
-    ctx.fillText('腹黑值测试', 60, -120);
-    ctx.restore();
+    ctx.fillText('扫码了解更多', W / 2, qrY + qrSize + 14);
 
     // 返回 Blob
     return new Promise(resolve => {
