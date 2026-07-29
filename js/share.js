@@ -90,7 +90,7 @@ const ShareCard = {
 
     // --- 分数环 ---
     const cx = W / 2, cy = 310, radius = 100;
-    const pct = score / 50;
+    const pct = score / 100;
 
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, Math.PI * 2);

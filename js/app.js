@@ -48,7 +48,7 @@ const App = {
     // 分数动画
     const scoreEl = document.getElementById('score-number');
     const ringEl = document.getElementById('ring-fill');
-    const pct = score / 50;
+    const pct = score / 100;
     const circumference = 2 * Math.PI * 85; // ~534
 
     // 数字跳动动画

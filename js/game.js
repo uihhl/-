@@ -61,7 +61,7 @@ const Game = {
    * 获取总分
    */
   getTotalScore() {
-    return this.totalScore;
+    return this.totalScore * 2;
   },
 
   /**
