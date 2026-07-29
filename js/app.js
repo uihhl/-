@@ -153,8 +153,31 @@ const App = {
     });
   },
 
+  // ---- 页面水印 ----
+  initWatermark() {
+    const wm = document.getElementById('watermark');
+    if (!wm) return;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const text = '小红书 自我说明书l71';
+    const cellW = 200;
+    const cellH = 150;
+    canvas.width = cellW * 2;
+    canvas.height = cellH * 2;
+    ctx.fillStyle = 'rgba(180, 180, 180, 1)';
+    ctx.font = '28px "PingFang SC", "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+    wm.style.backgroundImage = 'url(' + canvas.toDataURL() + ')';
+    wm.style.backgroundSize = cellW + 'px ' + cellH + 'px';
+  },
+
   // ---- 初始化 ----
   init() {
+    // --- 生成页面水印 ---
+    this.initWatermark();
+
     // 首页：开始按钮
     document.getElementById('btn-start').addEventListener('click', () => {
       this.startGame();
